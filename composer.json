@@ -1,0 +1,17 @@
+{
+    "name": "gbear/commission-calculator",
+    "description": "Calculate Commission for already made transactions",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Dawid Jurga",
+            "email": "dawidjurga@gmail.com"
+        }
+    ],
+    "require": {}
+}

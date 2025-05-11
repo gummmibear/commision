@@ -1,0 +1,21 @@
+#!/usr/bin/env php
+<?php
+
+require __DIR__ . '/../vendor/autoload.php';
+
+use App\Command\ImportFileCommand;
+use App\Services\Importer\ImporterFactory;
+use App\Services\Importer\Query\GetBinQuery;
+use App\Services\Importer\Query\GetExchangeRatesQuery;
+
+if ($argc < 2) {
+    echo "Usage: php bin/import path/to/file.json\n";
+    exit(1);
+}
+
+$importerFactory = new ImporterFactory();
+$getBinQuery = new GetBinQuery();
+$getExchangeRatesQuery = new GetExchangeRatesQuery();
+
+$importer = new ImportFileCommand($importerFactory, $getBinQuery, $getExchangeRatesQuery);
+$importer->handle($argv[1]);
