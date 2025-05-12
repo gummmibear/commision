@@ -4,6 +4,7 @@ namespace App\Services\Importer\Query;
 
 use App\Services\Importer\ValueObjects\Bin;
 use GuzzleHttp\Client;
+use http\Exception\RuntimeException;
 
 class GetBinQuery
 {
@@ -11,10 +12,12 @@ class GetBinQuery
 
     public function __invoke(string $binNumber)
     {
-        $response = $this->httpClient->request('GET', sprintf($this->url, $binNumber));
-
-        $body = $response->getBody();
-        $bin = json_decode($body, true);
+        try {
+            $response = $this->httpClient->request('GET', sprintf($this->url, $binNumber));
+        } catch (\Throwable $exception) {
+            throw new \RuntimeException($exception->getMessage());
+        }
+        $bin = json_decode($response->getBody(), true);
 
         return new Bin($bin);
     }
@@ -22,7 +25,6 @@ class GetBinQuery
 
     private function getBinStaticData(): array
     {
-
         $bin = [
             "number" => [],
             "scheme" => "visa",

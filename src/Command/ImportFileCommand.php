@@ -16,8 +16,7 @@ class ImportFileCommand
 
     public function handle(string $filePath): int
     {
-        $this->println('Importing file');
-        $this->println('File: ' . $filePath);
+        $this->println('Importing file: ' . $filePath);
 
         $transactions = $this->importerFactory
             ->create($filePath)
