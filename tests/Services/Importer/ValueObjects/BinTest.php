@@ -6,21 +6,21 @@ use PHPUnit\Framework\TestCase;
 
 class BinTest extends TestCase
 {
+    public function testBinShouldThrowExceptionIfCountryNotSet(): void
+    {
+        $sut = new Bin([]);
+
+        $this->expectException(\RuntimeException::class);
+
+        $sut->country();
+    }
+
     public function testBinShouldReturnCountryCode(): void
     {
         $data = ['country' => ['alpha2' => 'LT']];
 
-        $bin = new Bin($data);
+        $sut = new Bin($data);
 
-        $this->assertEquals('LT', $bin->country());
-    }
-
-    public function testBinShouldThrowExceptionIfCountryNotSet(): void
-    {
-        $bin = new Bin([]);
-
-        $this->expectException(\RuntimeException::class);
-
-        $bin->country();
+        $this->assertEquals('LT', $sut->country());
     }
 }

@@ -9,16 +9,16 @@ class TransactionTest extends TestCase
 {
     public function testTransactionIsEuro_ShouldReturnFalse(): void
     {
-        $transaction = new Transaction('123', 1.23, 'USD');
+        $sut = new Transaction('123', 1.23, 'USD');
 
-        $this->assertFalse($transaction->isEuro());
+        $this->assertFalse($sut->isEuro());
     }
 
 
     public function testTransactionIsEuro_ShouldReturnTrue(): void
     {
-        $transaction = new Transaction('123', 1.23, 'EUR');
+        $sut = new Transaction('123', 1.23, 'EUR');
 
-        $this->assertTrue($transaction->isEuro());
+        $this->assertTrue($sut->isEuro());
     }
 }

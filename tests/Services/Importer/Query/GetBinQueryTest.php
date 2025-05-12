@@ -48,6 +48,7 @@ class GetBinQueryTest extends TestCase
         $responseMock = $this->createMock(ResponseInterface::class);
         $streamMock = $this->createMock(StreamInterface::class);
 
+        //expect
         $streamMock->method('__toString')->willReturn(json_encode($binData));
         $responseMock->method('getBody')->willReturn($streamMock);
         $this->clientMock->method('request')

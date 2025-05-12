@@ -4,6 +4,7 @@ namespace Tests\Services;
 
 use App\Services\EuCuntry;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class EuCuntryTest extends TestCase
 {
@@ -13,7 +14,7 @@ class EuCuntryTest extends TestCase
         $this->sut = new EuCuntry();
     }
 
-    #[\PHPUnit\Framework\Attributes\DataProvider('euDataProvider')]
+    #[DataProvider('euDataProvider')]
     public function testEuCuntry(string $countryCode): void
     {
         $this->assertTrue($this->sut->isEu($countryCode));

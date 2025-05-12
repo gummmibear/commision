@@ -9,15 +9,15 @@ class ExchangeRatesTest extends TestCase
 {
     public function testGetExchangeRates_ShouldThrowException(): void
     {
-        $exchangeRates = new ExchangeRates([]);
+        $sut = new ExchangeRates([]);
         $this->expectException(\RuntimeException::class);
-        $exchangeRates->getFor('USD');
+        $sut->getFor('USD');
     }
 
     public function testGetExchangeRatesForCountry_ShouldReturnValidValue(): void
     {
-        $exchangeRates = new ExchangeRates(['USD' => 1.23]);
+        $sut = new ExchangeRates(['USD' => 1.23]);
 
-        $this->assertEquals(1.23, $exchangeRates->getFor('USD'));
+        $this->assertEquals(1.23, $sut->getFor('USD'));
     }
 }
