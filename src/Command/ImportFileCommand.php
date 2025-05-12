@@ -2,15 +2,17 @@
 
 namespace App\Command;
 
+use App\Services\CommissionCalculator;
 use App\Services\Importer\ImporterFactory;
-use App\Services\Importer\Query\GetBinQuery;
 use App\Services\Importer\Query\GetExchangeRatesQuery;
 
 class ImportFileCommand
 {
-    public function __construct(private ImporterFactory $importerFactory, private GetBinQuery $getBinQuery, private GetExchangeRatesQuery $getExchangeRatesQuery)
-    {
-    }
+    public function __construct(
+        private ImporterFactory $importerFactory,
+        private GetExchangeRatesQuery $getExchangeRatesQuery,
+        private CommissionCalculator  $commissionCalculator,
+    ){}
 
     public function handle(string $filePath): int
     {
@@ -22,16 +24,11 @@ class ImportFileCommand
             ->import();
 
         $exchangeRates = ($this->getExchangeRatesQuery)();
+        $commissionBin = $this->commissionCalculator->calculate($transactions, $exchangeRates);
 
-        foreach ($transactions->list() as $transaction) {
-            //$bin = ($this->getBinQuery)($transaction->bin);
-            //iseu
-            //var_dump($bin);
-            $isEu = true;
-
+        foreach ($commissionBin as $bin => $commission) {
+            $this->println(sprintf('Bin: %s => %s', $bin, $commission));
         }
-
-        var_dump($transactions, $exchangeRates);
 
         return 0;
     }

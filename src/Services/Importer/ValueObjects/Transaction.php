@@ -9,4 +9,9 @@ class Transaction
         public readonly float $amount,
         public readonly string $currency,
     ){}
+
+    public function isEuro(): bool
+    {
+        return $this->currency === 'EUR';
+    }
 }

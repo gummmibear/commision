@@ -1,0 +1,20 @@
+#!/usr/bin/env php
+<?php
+
+require __DIR__ . '/../vendor/autoload.php';
+
+use App\Services\Importer\Query\GetBinQuery;
+use GuzzleHttp\Client;
+
+
+if ($argc < 2) {
+    echo "Usage: php bin/bin {binNumber}\n";
+    exit(1);
+}
+
+$httpClient = new Client();
+
+$getBinQuery = new GetBinQuery($httpClient, 'https://lookup.binlist.net/%s');
+$result = ($getBinQuery)($argv[1]);
+
+var_dump($result);

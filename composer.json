@@ -13,5 +13,7 @@
             "email": "dawidjurga@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "guzzlehttp/guzzle": "^7.0"
+    }
 }

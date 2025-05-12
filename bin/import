@@ -4,18 +4,28 @@
 require __DIR__ . '/../vendor/autoload.php';
 
 use App\Command\ImportFileCommand;
+use App\Services\CommissionCalculator;
+use App\Services\EuCuntry;
 use App\Services\Importer\ImporterFactory;
 use App\Services\Importer\Query\GetBinQuery;
 use App\Services\Importer\Query\GetExchangeRatesQuery;
+use GuzzleHttp\Client;
 
 if ($argc < 2) {
     echo "Usage: php bin/import path/to/file.json\n";
     exit(1);
 }
 
-$importerFactory = new ImporterFactory();
-$getBinQuery = new GetBinQuery();
-$getExchangeRatesQuery = new GetExchangeRatesQuery();
+$exchangeRateUrl = 'https://api.apilayer.com/exchangerates_data/latest';
+$exchangeRateUrlApiKey = ''; //to env
 
-$importer = new ImportFileCommand($importerFactory, $getBinQuery, $getExchangeRatesQuery);
+$httpClient = new Client();
+
+$importerFactory = new ImporterFactory();
+$getBinQuery = new GetBinQuery($httpClient, 'https://lookup.binlist.net/%s'); // to env
+$getExchangeRatesQuery = new GetExchangeRatesQuery($httpClient, $exchangeRateUrl, $exchangeRateUrlApiKey);
+$euCuntry = new EuCuntry();
+$commissionCalculator = new CommissionCalculator($getBinQuery, $euCuntry);
+
+$importer = new ImportFileCommand($importerFactory, $getExchangeRatesQuery, $commissionCalculator);
 $importer->handle($argv[1]);
