@@ -16,13 +16,15 @@ if ($argc < 2) {
     exit(1);
 }
 
+// Note: config should go to env file
 $exchangeRateUrl = 'https://api.apilayer.com/exchangerates_data/latest';
 $exchangeRateUrlApiKey = ''; //to env
+$binLookupUrl = 'https://lookup.binlist.net/%s';
 
 $httpClient = new Client();
 
 $importerFactory = new ImporterFactory();
-$getBinQuery = new GetBinQuery($httpClient, 'https://lookup.binlist.net/%s'); // to env
+$getBinQuery = new GetBinQuery($httpClient, $binLookupUrl);
 $getExchangeRatesQuery = new GetExchangeRatesQuery($httpClient, $exchangeRateUrl, $exchangeRateUrlApiKey);
 $euCuntry = new EuCuntry();
 $commissionCalculator = new CommissionCalculator($getBinQuery, $euCuntry);
