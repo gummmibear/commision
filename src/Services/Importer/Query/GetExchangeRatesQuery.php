@@ -13,7 +13,7 @@ class GetExchangeRatesQuery
 
     public function __invoke(): ExchangeRates
     {
-        /**
+
         $response = $this->httpClient->request(
             'GET',
             $this->url,
@@ -26,8 +26,8 @@ class GetExchangeRatesQuery
 
         $body = $response->getBody();
         $rates = json_decode($body, true);
-        **/
-        $rates = $this->getRatesStatic();
+
+        //$rates = $this->getRatesStatic();
 
         return new ExchangeRates($rates['rates'] ?? []);
     }
