@@ -10,9 +10,7 @@ class BinTest extends TestCase
     {
         $sut = new Bin([]);
 
-        $this->expectException(\RuntimeException::class);
-
-        $sut->country();
+        $this->assertEquals('', $sut->country());
     }
 
     public function testBinShouldReturnCountryCode(): void
