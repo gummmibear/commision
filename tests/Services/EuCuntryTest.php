@@ -52,7 +52,7 @@ class EuCuntryTest extends TestCase
     }
 
 
-    #[\PHPUnit\Framework\Attributes\DataProvider('noEuDataProvider')]
+    #[DataProvider('noEuDataProvider')]
     public function testNoEu(string $countryCode): void
     {
         $this->assertFalse($this->sut->isEu($countryCode));
