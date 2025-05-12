@@ -2,31 +2,36 @@
 
 namespace App\Services\Importer\Query;
 
+use App\Services\Importer\Query\Exception\ApiException;
 use App\Services\Importer\ValueObjects\ExchangeRates;
-use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\GuzzleException;
 
 class GetExchangeRatesQuery
 {
-    public function __construct(private Client $httpClient, private readonly string $url, private readonly string $apiKey)
-    {
-    }
+    public function __construct(
+        private ClientInterface $httpClient,
+        private readonly string $url,
+        private readonly string $apiKey
+    ){}
 
     public function __invoke(): ExchangeRates
     {
-
-        $response = $this->httpClient->request(
-            'GET',
-            $this->url,
-            [
-                'headers' => [
-                    'apikey' => $this->apiKey,
+        try {
+            $response = $this->httpClient->request(
+                'GET',
+                $this->url,
+                [
+                    'headers' => [
+                        'apikey' => $this->apiKey,
+                    ]
                 ]
-            ]
-        );
+            );
+        } catch (GuzzleException $exception) {
+            throw new ApiException('Error occurred while fetching exchange rates from API', 0, $exception);
+        }
 
-        $body = $response->getBody();
-        $rates = json_decode($body, true);
-
+        $rates = json_decode($response->getBody(), true);
         //$rates = $this->getRatesStatic();
 
         return new ExchangeRates($rates['rates'] ?? []);
