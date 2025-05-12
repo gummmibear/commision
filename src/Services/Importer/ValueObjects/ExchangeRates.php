@@ -8,6 +8,6 @@ class ExchangeRates
     public function getFor(string $currency): float
     {
         return $this->data[$currency] ??
-            throw new \Exception(sprintf('Exchange rates not found for %s', $currency));
+            throw new \RuntimeException(sprintf('Exchange rates not found for %s', $currency));
     }
 }

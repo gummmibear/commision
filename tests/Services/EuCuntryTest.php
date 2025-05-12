@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests\Services;
+
 use App\Services\EuCuntry;
 use PHPUnit\Framework\TestCase;
 
@@ -40,7 +42,7 @@ class EuCuntryTest extends TestCase
         yield 'Latvia'         => ['LV'];
         yield 'Malta'          => ['MT'];
         yield 'Netherlands'    => ['NL'];
-        yield 'Poland'         => ['PO']; // Note: should be 'PL' ??
+        yield 'Poland'         => ['PO']; // Note: should be 'PL' ?? :)
         yield 'Portugal'       => ['PT'];
         yield 'Romania'        => ['RO'];
         yield 'Sweden'         => ['SE'];

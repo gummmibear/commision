@@ -8,6 +8,6 @@ class Bin
 
     public function country(): string
     {
-        return $this->data['country']['alpha2'] ?? throw new \Exception(sprintf('Transaction country not set'));
+        return $this->data['country']['alpha2'] ?? throw new \RuntimeException(sprintf('Transaction country not set'));
     }
 }
