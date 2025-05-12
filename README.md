@@ -7,3 +7,7 @@ composer i
 bin/import data/file.txt
 
 bin/bin {binNumber} - debug command
+
+
+#run unit test
+./vendor/bin/phpunit tests
