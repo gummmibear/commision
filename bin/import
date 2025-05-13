@@ -10,16 +10,19 @@ use App\Services\Importer\ImporterFactory;
 use App\Services\Importer\Query\GetBinQuery;
 use App\Services\Importer\Query\GetExchangeRatesQuery;
 use GuzzleHttp\Client;
+use Dotenv\Dotenv;
 
 if ($argc < 2) {
     echo "Usage: php bin/import path/to/file.json\n";
     exit(1);
 }
 
-// Note: config should go to env file
-$exchangeRateUrl = 'https://api.apilayer.com/exchangerates_data/latest';
-$exchangeRateUrlApiKey = ''; //to env
-$binLookupUrl = 'https://lookup.binlist.net/%s';
+$dotenv = Dotenv::createImmutable(__DIR__ . '/../');
+$dotenv->safeLoad();
+
+$exchangeRateUrl = $_ENV['EXCHANGE_RATE_URL'];
+$exchangeRateUrlApiKey = $_ENV['EXCHANGE_RATE_API_KEY'];
+$binLookupUrl = $_ENV['BIN_LOOKUP_URL'];
 
 $httpClient = new Client();
 

@@ -5,16 +5,21 @@ require __DIR__ . '/../vendor/autoload.php';
 
 use App\Services\Importer\Query\GetBinQuery;
 use GuzzleHttp\Client;
+use Dotenv\Dotenv;
 
+$dotenv = Dotenv::createImmutable(__DIR__ . "/../");
+$dotenv->safeLoad();
 
 if ($argc < 2) {
     echo "Usage: php bin/bin {binNumber}\n";
     exit(1);
 }
 
+$binLookupUrl = $_ENV['BIN_LOOKUP_URL'];
+
 $httpClient = new Client();
 
-$getBinQuery = new GetBinQuery($httpClient, 'https://lookup.binlist.net/%s');
+$getBinQuery = new GetBinQuery($httpClient, $binLookupUrl);
 $result = ($getBinQuery)($argv[1]);
 
 var_dump($result);
