@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Services\Importer\Query;
 
@@ -31,7 +32,7 @@ class GetExchangeRatesQuery
             throw new ApiException('Error occurred while fetching exchange rates from API', 0, $exception);
         }
 
-        $rates = json_decode($response->getBody(), true);
+        $rates = json_decode($response->getBody()->getContents(), true);
         //$rates = $this->getRatesStatic();
 
         return new ExchangeRates($rates['rates'] ?? []);

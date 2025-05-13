@@ -1,6 +1,5 @@
 <?php
-
-namespace Tests\Services\Importer;
+declare(strict_types=1);
 
 use App\Services\Importer\TxtImporter;
 use PHPUnit\Framework\TestCase;

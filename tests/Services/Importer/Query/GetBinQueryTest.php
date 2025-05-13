@@ -1,31 +1,23 @@
 <?php
+declare(strict_types=1);
 
 namespace Tests\Services\Importer\Query;
 
 use App\Services\Importer\ValueObjects\Bin;
-use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Client;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 use App\Services\Importer\Query\GetBinQuery;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\StreamInterface;
 
 class GetBinQueryTest extends TestCase
 {
     private string $url;
-    private ClientInterface $clientMock;
     private GetBinQuery $sut;
     public function setUp(): void
     {
         $this->url = 'https://bin.api.com/%s';
-        $this->clientMock = $this->createMock(ClientInterface::class);
-        $this->sut = new GetBinQuery($this->clientMock, $this->url);
-    }
-
-    public function testGetBin_ShouldReturnBin()
-    {
-        //given
-        $bin = '1234';
-
         $binData = [
             "number" => [],
             "scheme" => "visa",
@@ -44,16 +36,19 @@ class GetBinQueryTest extends TestCase
                 "name" => "Uab Finansines Paslaugos Contis"
             ]
         ];
+        $mockHandler = new MockHandler();
+        $mockHandler->append(
+            new Response(200, [], json_encode($binData))
+        );
 
-        $responseMock = $this->createMock(ResponseInterface::class);
-        $streamMock = $this->createMock(StreamInterface::class);
+        $client = new Client(['handler' => HandlerStack::create($mockHandler)]);
+        $this->sut = new GetBinQuery($client, $this->url);
+    }
 
-        //expect
-        $streamMock->method('__toString')->willReturn(json_encode($binData));
-        $responseMock->method('getBody')->willReturn($streamMock);
-        $this->clientMock->method('request')
-            ->with('GET', sprintf($this->url, $bin))
-            ->willReturn($responseMock);
+    public function testGetBin_ShouldReturnBin()
+    {
+        //given
+        $bin = '1234';
 
         //when
         $result = ($this->sut)($bin);

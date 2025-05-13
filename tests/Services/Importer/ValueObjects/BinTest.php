@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Tests\Services\Importer\ValueObjects;
 
 use App\Services\Importer\ValueObjects\Bin;

@@ -1,12 +1,19 @@
 <?php
+declare(strict_types=1);
 
 namespace Tests\Services\Importer\Query;
 
 use App\Services\Importer\Query\Exception\ApiException;
 use App\Services\Importer\Query\GetExchangeRatesQuery;
 use App\Services\Importer\ValueObjects\ExchangeRates;
+use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\InvalidArgumentException;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
@@ -24,18 +31,25 @@ class GetExchangeRatesQueryTest extends TestCase
         $this->apiKey = '123apiKey';
         $this->clientMock = $this->createMock(ClientInterface::class);
 
-        $this->sut = new GetExchangeRatesQuery($this->clientMock, $this->url, $this->apiKey);
+
     }
 
     public function testGetExchangeRates_ShouldThrowApiExceptionOnGuzzleException(): void
     {
-        $this->clientMock->method('request')
-            ->with('GET', $this->url, ['headers' => ['apikey' => $this->apiKey]])
-            ->willThrowException(new InvalidArgumentException());
+        //given
+        $mockHandler = new MockHandler();
+        $mockHandler->append(
+             new RequestException('Error Communicating with Server', new Request('GET', 'test'))
+        );
+        $client = new Client(['handler' => HandlerStack::create($mockHandler)]);
 
+        $sut = new GetExchangeRatesQuery($client, $this->url, $this->apiKey);
+
+        //expect
         $this->expectException(ApiException::class);
 
-        ($this->sut)();
+        //when
+        ($sut)();
     }
 
     public function testGetExchangeRates_ShouldReturnExchangeRatesWithData(): void
@@ -48,18 +62,17 @@ class GetExchangeRatesQueryTest extends TestCase
             ]
         ];
 
-        $responseMock = $this->createMock(ResponseInterface::class);
-        $streamMock = $this->createMock(StreamInterface::class);
+        $mockHandler = new MockHandler();
+        $mockHandler->append(
+            new Response(200, [], json_encode($rates))
+        );
 
-        //expect
-        $streamMock->method('__toString')->willReturn(json_encode($rates));
-        $responseMock->method('getBody')->willReturn($streamMock);
-        $this->clientMock->method('request')
-            ->with('GET', $this->url, ['headers' => ['apikey' => $this->apiKey]])
-            ->willReturn($responseMock);
+        $client = new Client(['handler' => HandlerStack::create($mockHandler)]);
+
+        $sut = new GetExchangeRatesQuery($client, $this->url, $this->apiKey);
 
         //when
-        $result = ($this->sut)();
+        $result = ($sut)();
 
         //then
         $this->assertInstanceOf(ExchangeRates::class, $result);

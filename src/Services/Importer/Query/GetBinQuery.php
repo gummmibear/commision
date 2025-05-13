@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Services\Importer\Query;
 
@@ -19,7 +20,7 @@ class GetBinQuery
             throw new ApiException('Error occurred while fetching bin data from API', 0, $exception);
         }
 
-        $bin = json_decode($response->getBody(), true);
+        $bin = json_decode($response->getBody()->getContents(), true);
 
         return new Bin($bin);
     }
