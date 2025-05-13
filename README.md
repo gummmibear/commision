@@ -36,5 +36,7 @@ Time: 00:00.021, Memory: 10.00 MB
 OK, but there were issues!
 Tests: 46, Assertions: 51, Warnings: 1.
 
+* Warning from test came from testing fopen when file not exist pls see test
+TxtImporterTest::testImport_ShouldThrowException_IfFileNotExists
 ```
 
