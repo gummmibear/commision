@@ -2,6 +2,8 @@
 
 namespace App\Services\Importer;
 
+use App\Services\Importer\Exception\ImportFactoryException;
+
 class ImporterFactory
 {
     public function create(string $filePath): ImporterInterface
@@ -10,7 +12,7 @@ class ImporterFactory
 
         return match ($fileExtension) {
             'txt' => new TxtImporter($filePath),
-            default => throw new \Exception('Importer for given file is not supported'),
+            default => throw new ImportFactoryException('Importer for given file is not supported'),
         };
     }
 }
