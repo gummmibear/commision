@@ -24,3 +24,18 @@ gbear@gbear:~/PhpProjects/commission$
 
 # run unit test
 ```./vendor/bin/phpunit tests```
+
+```
+gbear@gbear:~/PhpProjects/commission$ ./vendor/bin/phpunit tests
+PHPUnit 12.1.5 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 8.4.5
+
+......................................W.......                    46 / 46 (100%)
+
+Time: 00:00.021, Memory: 10.00 MB
+
+OK, but there were issues!
+Tests: 46, Assertions: 51, Warnings: 1.
+
+```
