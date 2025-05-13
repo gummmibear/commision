@@ -1,4 +1,4 @@
-# commision calculator
+# commission calculator
 
 # setup:
 ```composer i```
@@ -14,8 +14,6 @@ Bin: 516793 => 0.45
 Bin: 45417360 => 1.21
 Bin: 41417360 => 2.34
 Bin: 4745030 => 23.76
-gbear@gbear:~/PhpProjects/commission$ 
-
 ```
 
 
@@ -39,3 +37,4 @@ OK, but there were issues!
 Tests: 46, Assertions: 51, Warnings: 1.
 
 ```
+
